@@ -1,3 +1,5 @@
+// written by Guy Cordell
+
 // function to load the quizzes
 async function loadQuiz()
 {
@@ -25,7 +27,11 @@ document.body.prepend(selectorDiv);
 // run on start
 topicSelector();
 
+// end
 
+
+
+// written by Johnathan
 
 // review page javascript example
 const container = document.getElementById("review-container");
