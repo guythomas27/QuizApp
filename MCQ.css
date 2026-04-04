@@ -1,0 +1,53 @@
+/* Quiz Card Style */
+.quiz-card {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    background: #fff;
+}
+/* Quiz Header Style */
+.quiz-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+/* Options Container Style */
+.options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+/* Option Label Style */
+.option-label {
+    display: block;
+    padding: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+/* Option Label Hover Style */
+.option-label:hover {
+    background-color: #f8f9fa;
+    border-color: #007bff;
+}
+/* Selected Option Label Style */
+.option-label.selected {
+    background-color: #e7f3ff;
+    border-color: #007bff;
+}
+/* Submit Button Style */
+#submit-btn {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
