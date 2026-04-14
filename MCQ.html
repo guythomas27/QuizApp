@@ -1,42 +1,31 @@
+<!DOCTYPE html> <!-- Document Type Declaration -->
+<html lang="en"> <!-- Language Declaration -->
 <head>
-    <link rel="stylesheet" href="MCQ.css">
+    <title>Quiz App</title> <!-- Title of the Webpage -->
+    <link rel="stylesheet" href="MCQ.css"> <!-- Link to External CSS for Styling - Contains styles for quiz layout, colors, fonts, and responsive design -->
 </head>
 
 <!-- Multiple Choice Quiz Interface -->
+<body> <!-- Container for Quiz -->
+    <div id="quiz-container" class="quiz-card"> <!-- Quiz Card Container -->
+        <div class="quiz-header"> <!-- Quiz Header Container -->
+            <h2 id="question-text">Loading Question...</h2> <!-- Placeholder Text - Replaced when question is loaded -->
+            <div id="timer">10:00</div> <!-- Timer Display - Updated by timer.js  - Starts at the starting time -->
+        </div>
 
-<!-- Quiz Container -->
-<div id="quiz-container" class="quiz-card">
-    <!-- Quiz Header -->
-    <div class="quiz-header">
-        <h2 id="question-text">Loading question...</h2> <!-- Placeholder Text -->
-        <span id="timer-display">Time: --:--</span> <!-- Timer Display -->
+        <form id="options-form" class="options-container"></form> <!-- Form for Answer Options - Dynamically populated by quiz.js -->
+
+        <div class="quiz-footer"> <!-- Quiz Footer Container -->
+            <button type="button" id="submit-btn" disabled>Submit Answer</button> <!-- Submit Button - Enabled when an option is selected, handled by quiz.js -->
+        </div>
+
+        <!-- Result Container is swapped between hidden and visibile by the JS file - Depending on the context of the user's progression -->
+        <div id="result-container" class="hidden"> <!-- Result Container - Hidden by default -->
+            <p id="feedback-message"></p> <!-- Feedback Message - Updated after answer submission "correct" or "incorrect" -->
+            <!-- Also possible display the correct answer -->
+            <h3 id="final-score"></h3> <!-- Final Score Display - Updated after quiz completion -->
+        </div>
     </div>
-
-    <!-- Quiz Options -->
-    <form id="options-form" class="options-container">
-        </form>
-
-    <!-- EXAMPLE OPTIONS -->
-    <form id="options-form" class="options-container">
-    <label class="option-label">
-        <input type="radio" name="quiz-option" value="One"> One
-    </label>  
-    <label class="option-label selected">
-        <input type="radio" name="quiz-option" value="Two" checked> Two
-    </label>
-    
-    <label class="option-label">
-        <input type="radio" name="quiz-option" value="Three"> Three
-    </label>
-    
-    <label class="option-label">
-        <input type="radio" name="quiz-option" value="Four"> Four
-    </label>
-    </form>
-
-    <!-- Quiz Footer -->
-    <div class="quiz-footer">
-        <!-- Submit Button -->
-        <button type="button" id="submit-btn">Submit Answer</button>
-    </div>
-</div>
+    <script src="quiz.js"></script> <!-- JavaScript for Quiz Logic - Handles question loading, answer selection, timer, and result display -->
+</body>
+</html>
