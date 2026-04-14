@@ -1,0 +1,25 @@
+{
+    "topic": "Math",
+    "questions": [
+        {
+            "question": "What is 15 + 27?",
+            "choices": ["40", "41", "42", "43"],
+            "correctAnswer": 2
+        },
+        {
+            "question": "What is 7 x 8?",
+            "choices": ["54", "56", "58", "60"],
+            "correctAnswer": 1
+        },
+        {
+            "question": "What is 50 - 19?",
+            "choices": ["29", "30", "31", "32"],
+            "correctAnswer": 2
+        },
+        {
+            "question": "What is the square root of 64?",
+            "choices": ["6", "7", "8", "9"],
+            "correctAnswer": 2
+        }
+    ]
+}

@@ -1,0 +1,25 @@
+{
+    "topic": "Science",
+    "questions": [
+        {
+            "question": "What planet is closest to the Sun?",
+            "choices": ["Venus", "Earth", "Mercury", "Mars"],
+            "correctAnswer": 2
+        },
+        {
+            "question": "What type of rock is Obsidian?",
+            "choices": ["Igneous", "Sedimentary", "Metamorphic"],
+            "correctAnswer": 0
+        },
+        {
+            "question": "What part of the cell contains DNA?",
+            "choices": ["Nucleus", "Cytoplasm", "Cell membrane", "Ribosome"],
+            "correctAnswer": 0
+        },
+        {
+            "question": "What is the chemical symbol for water?",
+            "choices": ["O2", "H2O", "CO2", "NaCl"],
+            "correctAnswer": 1
+        }
+    ]
+}

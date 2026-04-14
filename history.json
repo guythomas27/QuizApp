@@ -1,0 +1,25 @@
+{
+    "topic": "History",
+    "questions": [
+        {
+            "question": "Who was the first President of the United States?",
+            "choices": ["Thomas Jefferson", "George Washington", "John Adams", "Abraham Lincoln"],
+            "correctAnswer": 1
+        },
+        {
+            "question": "What anxient civilization built the pyramids?",
+            "choices": ["Romans", "Greeks", "Egyptians", "Mayans"],
+            "correctAnswer": 2
+        },
+        {
+            "question": "Which empire was ruled by Julius Caesar?",
+            "choices": ["Greek Empire", "Roman Empire", "Ottoman Empire", "British Empire"],
+            "correctAnswer": 1
+        },
+        {
+            "question": "Which country gifted the Statue of Liberty to the United States?",
+            "choices": ["England", "Germany", "France", "Spain"],
+            "correctAnswer": 2
+        }
+    ]
+}
