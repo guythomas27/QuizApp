@@ -1,14 +1,3 @@
-// TEMPORARY Question Until JSON Is Implemented
-// Currently using the variable "quizData" to pull questions, it can be changed when JSON is implemented.
-const quizData =
-[
-    {
-        question: "Choose a number between 1 and 4",
-        options: ["1", "2", "3", "4"],
-        answer: "2"
-    }
-];
-
 // Links to the JSON files so they can be implemented into the quiz selector:
 // https://raw.githubusercontent.com/guythomas27/QuizApp/refs/heads/main/history.json - History Topic
 // https://raw.githubusercontent.com/guythomas27/QuizApp/refs/heads/main/math.json - Math Topic
