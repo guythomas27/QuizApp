@@ -62,12 +62,12 @@ function initQuiz() {
 
 // Question Loader Function - Loads the question and options into the UI (HTML)
 function loadQuestion() {
-    const data = quizData[0]; // Get the first question from quizData
+    const data = quizData[currentQuestionIndex]; // Get the first question from quizData
     questionEl.textContent = data.question; // Set the question text
     optionsForm.innerHTML = ''; // Clear previous options
     // Create radio button options for each answer choice
     // .forEach is a function that executes a provided function once for each array element
-    data.options.forEach(option => {
+    data.choices.forEach(option => {
         const label = document.createElement('label'); // Create a label element for each option - HTML
         label.className = 'option-label'; // Set the class name for styling - CSS
         label.innerHTML = `<input type="radio" name="quiz-option" value="${option}"> ${option}`; // Create radio button for each option
@@ -99,7 +99,7 @@ function handleSubmission()
     const selected = document.querySelector('input[name="quiz-option"]:checked'); // Get the selected option
     const feedback = document.getElementById('feedback-message'); // Get the feedback message element
     // If the selected option is correct
-    if (selected && selected.value === quizData[0].answer)
+    if (selected && selected.value === quizData[currentQuestionIndex].choices[quizData[currentQuestionIndex].correctAnswer])
     {
         currentScore++; // Increment score for correct answer
         feedback.textContent = "Correct!"; // Provide feedback for correct answer
