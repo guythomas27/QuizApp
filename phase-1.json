@@ -1,14 +1,7 @@
 {
   "quizzes": [
-    {
-      "topic": "Math",
-      "questions": [
-        {
-          "question": "2 + 2?",
-          "choices": ["3", "4", "5", "6"],
-          "correctAnswer": 1
-        }
-      ]
-    }
+    { "name": "Math", "file": "math.json" },
+    { "name": "Science", "file": "science.json" },
+    { "name": "History", "file": "history.json" }
   ]
 }
