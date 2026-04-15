@@ -17,6 +17,7 @@ let countdown; // Timer countdown variable
 
 // Variable to keep track of score
 let currentScore = 0; // Initial score of the user is 0
+let currentQuestionIndex = 0;
 
 // Timer Logic Cameron Wrote From Timer.js
 function formatTime(seconds) {
