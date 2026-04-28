@@ -111,7 +111,10 @@ function handleSubmission() {
     const feedback = document.getElementById('feedback-message');
     const correctIdx = quizData[currentQuestionIndex].correctAnswer;
 
-    if (selected && parseInt(selected.value) === correctIdx) {
+    if (timeUp) {
+        feedback.textContent = "Time's up!";
+        feedback.className = "incorrect";
+    } else if (selected && parseInt(selected.value) === correctIdx) {
         currentScore++;
         feedback.textContent = "Correct!";
         feedback.className = "correct";
@@ -120,12 +123,16 @@ function handleSubmission() {
         feedback.className = "incorrect";
     }
 
-    // Hide and Show UI (Johnathan's Logic)
+    submitBtn.disabled = true;
+    nextBtn.disabled = timeUp;
+
+    // Hide and Show UI (Johnathan)
     document.querySelector('.quiz-header').classList.add('hidden');
     optionsForm.classList.add('hidden');
     document.querySelector('.quiz-footer').classList.add('hidden');
     document.getElementById('result-container').classList.remove('hidden');
-    document.getElementById('final-score').textContent = `Current Score: ${currentScore}/${currentQuestionIndex + 1}`;
+    document.getElementById('final-score').textContent = 
+        `Current Score: ${currentScore}/${currentQuestionIndex + 1}`;
 }
 
 // Event Listeners
