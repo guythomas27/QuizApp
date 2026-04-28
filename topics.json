@@ -1,0 +1,7 @@
+{
+  "quizzes": [
+    { "name": "History", "file": "history.json" },
+    { "name": "Math", "file": "math.json" },
+    { "name": "Science", "file": "science.json" }
+  ]
+}
