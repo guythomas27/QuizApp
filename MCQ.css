@@ -1,51 +1,46 @@
 /* Quiz Card Style - Holds all quiz elements */
 .quiz-card {
     max-width: 600px;
-    margin: 2rem auto; /* Centers the quiz card */
+    margin: 2rem auto;
     padding: 20px;
     border-radius: 20px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     background: #fff;
 }
 
-/* Quiz Header Style - Where the question and the timer is displayed */
 .quiz-header {
     display: flex;
-    align-items: flex-start;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
 }
 
-/* Options Container Style - Main wrapper for the answer options */
 .options-container {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-/* Option Label Style - Where the options are displayed */
 .option-label {
-    display: block; /* Makes the label a block element, allowing it to take up the full width */
+    display: block;
     padding: 15px;
     border: 2px solid #e0e0e0;
     border-radius: 8px;
-    cursor: pointer; /* Allows users to click the option */
-    transition: all 0.2s ease; /* Smooth transition for hover and selection effects */
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-/* Option Label Hover Style - Changes the background and border color on hover */
 .option-label:hover {
     background-color: #f8f9fa;
     border-color: #007bff;
 }
 
-/* Selected Option Label Style - Changes the appearance when a user selects an option */
 .option-label.selected {
-    background-color: #e7f3ff; /* Light blue background for selected option */
-    border-color: #007bff; /* Same blue border for selected option */
+    background-color: #e7f3ff;
+    border-color: #007bff;
 }
 
-/* Submit Button Style */
-#submit-btn {
+#submit-btn, #next-btn {
     margin-top: 20px;
     width: 100%;
     padding: 12px;
@@ -53,22 +48,11 @@
     color: #fff;
     border: 2px solid #3693f7;
     border-radius: 6px;
-    cursor: pointer; /* Allows users to click the button */
+    cursor: pointer;
     font-weight: bold;
 }
 
-/* Hidden Class - Makes elements invisible when labeled as .hidden */
-.hidden {
-    display: none !important; /* Display none makes elements invisible */
-}
-
-/* Styling for correct answers - Displayed in the feedback container */
-.correct {
-    color: #00bc2c;
-    font-weight: bold;
-}
-/* Styling for incorrect answers - Displayed in the feedback container */
-.incorrect {
-    color: #f9152c;
-    font-weight: bold;
-}
+.hidden { display: none !important; }
+.warning { color: red; font-weight: bold; }
+.correct { color: #00bc2c; font-weight: bold; }
+.incorrect { color: #f9152c; font-weight: bold; }
