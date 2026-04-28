@@ -1,137 +1,147 @@
-// Links to the JSON files so they can be implemented into the quiz selector:
-// https://raw.githubusercontent.com/guythomas27/QuizApp/refs/heads/main/history.json - History Topic
-// https://raw.githubusercontent.com/guythomas27/QuizApp/refs/heads/main/math.json - Math Topic
-// https://raw.githubusercontent.com/guythomas27/QuizApp/refs/heads/main/science.json - Science Topic
+// Topic Selector (Guy)
+let quizData = [];
+async function loadQuizFile(file) {
+    const response = await fetch(file);
+    return await response.json();
+}
+// function to show a barebones topic selector
+async function topicSelector()
+{
+    // load the manifest data
+    const manifest = await loadQuizFile('topics.json');
+    // creates the drop down menu for selecting topics
+    const select = document.createElement('select');
+    select.id = "topic-dropdown";
+    select.innerHTML = `<option disabled selected>-- Choose a Topic --</option>`;
+    // loop to go through all topics in the json.
+    manifest.quizzes.forEach(quiz => {
+        const option = document.createElement('option');
+        // pulls file name, and subject name for the quiz
+        option.value = quiz.file;
+        option.textContent = quiz.name;
+        // makes it an option
+        select.appendChild(option);
+    });
+    // slection handler
+    select.addEventListener('change', async (event) => {
+        const selectedFile = event.target.value;
+        // fetches the specific topic questions
+        const specificQuizData = await loadQuizFile(selectedFile);
+        // updates quiz data
+        quizData = specificQuizData.questions;
+        document.getElementById('quiz-container').classList.remove('hidden');
+        initQuiz(); 
+    });
+    document.getElementById('selector-container').appendChild(select);
+}
 
-// All DOM Elements - Variable Names Match MCQ.HTML
-// The document.getElementById function is used to select elements from the HTML document, looking for the given name
-const timerElement = document.getElementById("timer"); // Timer display element - Pulled from HTML file
-const questionEl = document.getElementById('question-text'); // Question text element - Pulled from HTML file
-const optionsForm = document.getElementById('options-form'); // Options form element - Pulled from HTML file
-const submitBtn = document.getElementById('submit-btn'); // Submit button element - Pulled from HTML file
+// blew up the selector. Kablam.
 
-// Countdown timer variables from Cameron's code
-let totalTime = 600; // Total time in seconds
-let remainingTime = totalTime; // Time left in seconds (Initialized as totalTime)
-let countdown; // Timer countdown variable
+// Quiz Logic (Cameron and Johnathan)
+const timerElement = document.getElementById("timer");
+const questionEl = document.getElementById('question-text');
+const optionsForm = document.getElementById('options-form');
+const submitBtn = document.getElementById('submit-btn');
+const nextBtn = document.getElementById('next-btn');
 
-// Variable to keep track of score
-let currentScore = 0; // Initial score of the user is 0
+let totalTime = 600; 
+let remainingTime = totalTime;
+let countdown;
+let currentScore = 0;
 let currentQuestionIndex = 0;
 
-// Timer Logic Cameron Wrote From Timer.js
 function formatTime(seconds) {
-  const mins = Math.floor(seconds / 60); // Get minutes
-  const secs = seconds % 60; // Get seconds
-  return `${mins}:${secs.toString().padStart(2, '0')}`; // Format time as mm:ss
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
 
-// Function to start the timer at the beginning of quiz
-function startTimer()
-{
-    // Clear any existing timer before starting a new one
-    clearInterval(countdown); // Clear Interval Function sets variable to null
-    // Use SetInterval to create a countdown
-    // setInterval() is a built in JavaScript function that repeatedly calls a function with a fixed time
-    // delay between each call. The delay is at the bottom
+function startTimer() {
+    clearInterval(countdown);
     countdown = setInterval(() => {
-    remainingTime--; // Decrement remaining time by 1 (Each 1 is a second)
-    timerElement.textContent = formatTime(remainingTime); // Update timer display with correct time by calling formatTime
-    // When the timer reaches 0
-    if (remainingTime <= 0) {
-        clearInterval(countdown); // Clear Interval Function sets variable to null
-        timerElement.textContent = "00:00"; // Display 00:00 when time is up
-        handleSubmission(); // Call the submission handler to close the quiz early
-    }
-  }, 1000); // 1000 milliseconds = 1 second so the timer will update every second (JS works in milliseconds)
+        remainingTime--;
+        timerElement.textContent = formatTime(remainingTime);
+        if (remainingTime <= 60) timerElement.classList.add("warning"); // Cameron's red alert
+        if (remainingTime <= 0) {
+            clearInterval(countdown);
+            handleSubmission();
+        }
+    }, 1000);
 }
 
-// Function to initialize the quiz (Resets after a new quiz is started)
 function initQuiz() {
-    // Reset User's Score to 0 at the start of each quiz
     currentScore = 0;
-    // Reset Timer Variables
-    remainingTime = totalTime; // Reset remaining time to total time
-    timerElement.textContent = formatTime(remainingTime); // Update timer display with correct time by calling formatTime
-    // Reset UI Elements
-    document.getElementById('result-container').classList.add('hidden'); // Hide result container (Which is shown after a quiz is completed)
-    submitBtn.disabled = true; // Disable submit button (Prevents submission before answering)
-    // Load the first question by calling loadQuestion
+    currentQuestionIndex = 0;
+    remainingTime = totalTime;
+    timerElement.textContent = formatTime(remainingTime);
+    timerElement.classList.remove("warning");
+    startTimer();
     loadQuestion();
 }
 
-// Question Loader Function - Loads the question and options into the UI (HTML)
 function loadQuestion() {
-    const data = quizData[currentQuestionIndex]; // Get the first question from quizData
-    questionEl.textContent = data.question; // Set the question text
-    optionsForm.innerHTML = ''; // Clear previous options
-    // Create radio button options for each answer choice
-    // .forEach is a function that executes a provided function once for each array element
-    data.choices.forEach(option => {
-        const label = document.createElement('label'); // Create a label element for each option - HTML
-        label.className = 'option-label'; // Set the class name for styling - CSS
-        label.innerHTML = `<input type="radio" name="quiz-option" value="${option}"> ${option}`; // Create radio button for each option
-        optionsForm.appendChild(label); // Append the label to the options form
+    const data = quizData[currentQuestionIndex];
+    questionEl.textContent = data.question;
+    optionsForm.innerHTML = '';
+    optionsForm.classList.remove('hidden');
+    document.getElementById('result-container').classList.add('hidden');
+    document.querySelector('.quiz-header').classList.remove('hidden');
+    document.querySelector('.quiz-footer').classList.remove('hidden');
+
+    data.choices.forEach((option, index) => {
+        const label = document.createElement('label');
+        label.className = 'option-label';
+        label.innerHTML = `<input type="radio" name="quiz-option" value="${index}"> ${option}`;
+        optionsForm.appendChild(label);
     });
 
-    // Listen for changes on the options form
     optionsForm.onchange = () => {
-        // Deselect all option labels
-        // .querySelectorAll is a function that returns all elements that match a specified CSS selector
         document.querySelectorAll('.option-label').forEach(l => l.classList.remove('selected'));
-        // .querySelector is a function that returns the first element that matches a specified CSS selector
         const selected = document.querySelector('input[name="quiz-option"]:checked');
-        // Once an option is selected
         if (selected) {
-            selected.parentElement.classList.add('selected'); // Highlight the selected option
-            submitBtn.disabled = false; // Enable the submit button
+            selected.parentElement.classList.add('selected');
+            submitBtn.disabled = false;
         }
     };
-
-    startTimer(); // Start the timer
 }
 
-// Score Calculation Function and Submission Handler
-// Runs between question submissions
-function handleSubmission()
-{
-    clearInterval(countdown); // Stop the timer when the question is submitted
-    const selected = document.querySelector('input[name="quiz-option"]:checked'); // Get the selected option
-    const feedback = document.getElementById('feedback-message'); // Get the feedback message element
-    // If the selected option is correct
-    if (selected && selected.value === quizData[currentQuestionIndex].choices[quizData[currentQuestionIndex].correctAnswer])
-    {
-        currentScore++; // Increment score for correct answer
-        feedback.textContent = "Correct!"; // Provide feedback for correct answer
-        feedback.className = "correct"; // Set class for correct feedback
-    }
-    // If the selected option is incorrect
-    else
-    {
-        // No changes needed to score
-        feedback.textContent = "Incorrect!"; // Provide feedback for incorrect answer
-        feedback.className = "incorrect"; // Set class for incorrect feedback
-    }
-    // Hide question elements
-    document.querySelector('.quiz-header').classList.add('hidden'); // Hides the quiz header (question)
-    document.getElementById('options-form').classList.add('hidden'); // Hides the options form (answers)
-    document.querySelector('.quiz-footer').classList.add('hidden'); // Hides the quiz footer (submission button)
+function handleSubmission() {
+    clearInterval(countdown);
+    const selected = document.querySelector('input[name="quiz-option"]:checked');
+    const feedback = document.getElementById('feedback-message');
+    const correctIdx = quizData[currentQuestionIndex].correctAnswer;
 
-    // Show result container (which is still inside the quiz-container)
-    document.getElementById('result-container').classList.remove('hidden'); // Shows the result container
-    document.getElementById('final-score').textContent = `Final Score: ${currentScore}/1`; // Display final score (Currently hardcoded to 1 question, will be updated with dynamic question loading)
+    if (selected && parseInt(selected.value) === correctIdx) {
+        currentScore++;
+        feedback.textContent = "Correct!";
+        feedback.className = "correct";
+    } else {
+        feedback.textContent = "Incorrect!";
+        feedback.className = "incorrect";
+    }
+
+    // Hide and Show UI (Johnathan's Logic)
+    document.querySelector('.quiz-header').classList.add('hidden');
+    optionsForm.classList.add('hidden');
+    document.querySelector('.quiz-footer').classList.add('hidden');
+    document.getElementById('result-container').classList.remove('hidden');
+    document.getElementById('final-score').textContent = `Current Score: ${currentScore}/${currentQuestionIndex + 1}`;
 }
 
 // Event Listeners
-submitBtn.addEventListener('click', handleSubmission); // Handle question submission
+submitBtn.addEventListener('click', handleSubmission);
+nextBtn.addEventListener('click', () => {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < quizData.length) {
+        loadQuestion();
+    } else {
+        clearInterval(countdown);
+        questionEl.textContent = "Quiz Complete!";
+        document.getElementById('result-container').innerHTML = `<h3>Final Score: ${currentScore}/${quizData.length}</h3>`;
+    }
+});
 
-// Start the quiz
-initQuiz(); // Call the initialization function to set up the quiz
-
-// NEED TO DO:
-// Incorporate a function / button to load the next question. Need to add new containers to HTML, update the JS Logic,
-//      load the next question's data, and update CSS. JS Logic will need to account for multiple questions, have a currentIndex
-//      variable to increment, and keep track of the user's answers.
-// Incorporate a function to handle the end of the quiz. - IF currentQuestionIndex < quizData.length (Incorporated with JSON files)
-//      When the above condition isnt met - show final results and hide quiz container
-// Incorporate JSON (github or prewritten)
+// Run when page is fully loaded
+document.addEventListener("DOMContentLoaded", () => {
+    topicSelector();
+});
