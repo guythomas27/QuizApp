@@ -37,7 +37,7 @@ async function topicSelector()
 
 // blew up the selector. Kablam.
 
-// Quiz Logic (Cameron and Johnathan)
+// Quiz Logic
 const timerElement = document.getElementById("timer");
 const questionEl = document.getElementById('question-text');
 const optionsForm = document.getElementById('options-form');
@@ -61,10 +61,10 @@ function startTimer() {
     countdown = setInterval(() => {
         remainingTime--;
         timerElement.textContent = formatTime(remainingTime);
-        if (remainingTime <= 60) timerElement.classList.add("warning"); // Cameron's red alert
+        if (remainingTime <= 60) timerElement.classList.add("warning");
         if (remainingTime <= 0) {
             clearInterval(countdown);
-            handleSubmission(true);
+            handleSubmission(true); // Pass true to signal a Time Out
         }
     }, 1000);
 }
@@ -84,10 +84,12 @@ function loadQuestion() {
     questionEl.textContent = data.question;
     optionsForm.innerHTML = '';
     
+    // Reset visibility for the new question
     optionsForm.classList.remove('hidden');
     document.getElementById('result-container').classList.add('hidden');
     document.querySelector('.quiz-header').classList.remove('hidden');
     document.querySelector('.quiz-footer').classList.remove('hidden');
+    submitBtn.disabled = true;
 
     data.choices.forEach((option, index) => {
         const label = document.createElement('label');
@@ -110,46 +112,51 @@ function handleSubmission(isTimeOut = false) {
     if (isTimeOut) {
         clearInterval(countdown);
     }
+
     const selected = document.querySelector('input[name="quiz-option"]:checked');
     const feedback = document.getElementById('feedback-message');
     const correctIdx = quizData[currentQuestionIndex].correctAnswer;
 
-    if (isTimeOut) {
-        feedback.textContent = "Time's up!";
-        feedback.className = "incorrect";
-    } else if (selected && parseInt(selected.value) === correctIdx) {
+    if (selected && parseInt(selected.value) === correctIdx) {
         currentScore++;
         feedback.textContent = "Correct!";
         feedback.className = "correct";
     } else {
-        feedback.textContent = "Incorrect!";
+        feedback.textContent = isTimeOut ? "Time is up!" : "Incorrect!";
         feedback.className = "incorrect";
     }
-    // Toggle UI visibility
+
+    // Hide options but NOT the header (timer) or footer (buttons) unless the quiz is over
     optionsForm.classList.add('hidden');
     document.getElementById('result-container').classList.remove('hidden');
-    document.getElementById('final-score').textContent = `Current Score: ${currentScore}/${currentQuestionIndex + 1}`;
+    document.getElementById('final-score').textContent = `Score: ${currentScore}/${currentQuestionIndex + 1}`;
+    
+    // Hide Submit, show Next
+    submitBtn.parentElement.classList.add('hidden');
 
     if (isTimeOut) {
         nextBtn.classList.add('hidden');
-        questionEl.textContent = "Quiz Over - Out of Time!";
+        questionEl.textContent = "Quiz Over!";
     }
 }
 
 // Event Listeners
-submitBtn.addEventListener('click', handleSubmission);
+submitBtn.addEventListener('click', () => handleSubmission(false));
+
 nextBtn.addEventListener('click', () => {
     currentQuestionIndex++;
     if (currentQuestionIndex < quizData.length) {
+        submitBtn.parentElement.classList.remove('hidden');
         loadQuestion();
     } else {
         clearInterval(countdown);
         questionEl.textContent = "Quiz Complete!";
+        optionsForm.classList.add('hidden');
+        document.querySelector('.quiz-footer').classList.add('hidden');
         document.getElementById('result-container').innerHTML = `<h3>Final Score: ${currentScore}/${quizData.length}</h3>`;
     }
 });
 
-// Run when page is fully loaded
 document.addEventListener("DOMContentLoaded", () => {
     topicSelector();
 });
