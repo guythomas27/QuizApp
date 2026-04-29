@@ -72,9 +72,11 @@ function startTimer() {
 function initQuiz() {
     currentScore = 0;
     currentQuestionIndex = 0;
+
     remainingTime = totalTime;
     timerElement.textContent = formatTime(remainingTime);
     timerElement.classList.remove("warning");
+
     startTimer();
     loadQuestion();
 }
@@ -135,13 +137,13 @@ nextBtn.addEventListener('click', () => {
     if (currentQuestionIndex < quizData.length) {
         loadQuestion();
     } else {
-        clearInterval(countdown);
         questionEl.textContent = "Quiz Complete!";
-        document.getElementById('result-container').innerHTML = `<h3>Final Score: ${currentScore}/${quizData.length}</h3>`;
+        document.getElementById('result-container').innerHTML =
+            `<h3>Final Score: ${currentScore}/${quizData.length}</h3>`;
     }
 });
 
-// Run when page is fully loaded
+// run when page is fully loaded
 document.addEventListener("DOMContentLoaded", () => {
     topicSelector();
-});
+})
