@@ -64,7 +64,7 @@ function startTimer() {
         if (remainingTime <= 60) timerElement.classList.add("warning"); // Cameron's red alert
         if (remainingTime <= 0) {
             clearInterval(countdown);
-            handleSubmission();
+            handleSubmission(true);
         }
     }, 1000);
 }
@@ -83,6 +83,7 @@ function loadQuestion() {
     const data = quizData[currentQuestionIndex];
     questionEl.textContent = data.question;
     optionsForm.innerHTML = '';
+    
     optionsForm.classList.remove('hidden');
     document.getElementById('result-container').classList.add('hidden');
     document.querySelector('.quiz-header').classList.remove('hidden');
@@ -105,13 +106,15 @@ function loadQuestion() {
     };
 }
 
-function handleSubmission() {
-    clearInterval(countdown);
+function handleSubmission(isTimeOut = false) {
+    if (isTimeOut) {
+        clearInterval(countdown);
+    }
     const selected = document.querySelector('input[name="quiz-option"]:checked');
     const feedback = document.getElementById('feedback-message');
     const correctIdx = quizData[currentQuestionIndex].correctAnswer;
 
-    if (timeUp) {
+    if (isTimeOut) {
         feedback.textContent = "Time's up!";
         feedback.className = "incorrect";
     } else if (selected && parseInt(selected.value) === correctIdx) {
@@ -122,17 +125,15 @@ function handleSubmission() {
         feedback.textContent = "Incorrect!";
         feedback.className = "incorrect";
     }
-
-    submitBtn.disabled = true;
-    nextBtn.disabled = timeUp;
-
-    // Hide and Show UI (Johnathan)
-    document.querySelector('.quiz-header').classList.add('hidden');
+    // Toggle UI visibility
     optionsForm.classList.add('hidden');
-    document.querySelector('.quiz-footer').classList.add('hidden');
     document.getElementById('result-container').classList.remove('hidden');
-    document.getElementById('final-score').textContent = 
-        `Current Score: ${currentScore}/${currentQuestionIndex + 1}`;
+    document.getElementById('final-score').textContent = `Current Score: ${currentScore}/${currentQuestionIndex + 1}`;
+
+    if (isTimeOut) {
+        nextBtn.classList.add('hidden');
+        questionEl.textContent = "Quiz Over - Out of Time!";
+    }
 }
 
 // Event Listeners
